@@ -36,8 +36,8 @@ CREATE TABLE IF NOT EXISTS livro (
     tamanho VARCHAR(5),
     idAutor INT NOT NULL,
     idEditora INT NOT NULL, 
-    CONSTRAINT idAutor_Fk FOREIGN KEY idAutor REFERENCES autor(id),
-    CONSTRAINT idEditora_Fk FOREIGN KEY idEditora REFERENCES editora(id)
+    CONSTRAINT idAutor_Fk FOREIGN KEY (idAutor) REFERENCES autor(id),
+    CONSTRAINT idEditora_Fk FOREIGN KEY (idEditora) REFERENCES editora(id)
 );
 
 
