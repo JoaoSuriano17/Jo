@@ -24,4 +24,47 @@ router.get("/:id", async (req, res) => {
   res.status(200).json(r.rows)
 });
 
+router.post("/", async (req, res) => {
+
+  const {
+    titulo,
+    genero,
+    classificacao,
+    editora,
+    volume,
+    data_publicacao,
+    qtde_paginas,
+    estoque,
+    preco,
+    sinopse,
+    tamanho,
+    idAutor,
+    idEditora
+  } = req.body;
+
+  if (!titulo && !genero && !classificacao && !editora && !volume && !data_publicacao && !qtde_paginas && !estoque && !preco && !sinopse && !tamanho && !idAutor && !idEditora){
+    return res.status(400).json({msg: "Todos os dados devem ser inseridos!"})
+  }
+
+  const idA = await db.query("SELECT * FROM autor WHERE idAutor = $1", [idAutor])
+  if (idA.rowCount == 0){
+    return res.status(404).json({msg: "Não há autor com esse id!"})
+  }
+  
+  const idE = await db.query("SELECT * FROM editora WHERE idEditora = $1", [idEditora])
+  if (idE.rowCount == 0){
+    return res.status(404).json({msg: "Não há autor com esse id!"})
+  }
+
+  const r = await db.query("INSERT INTO livro(titulo, genero, classificacao, editora, volume, data_publicacao, qtde_paginas, estoque, preco, sinopse, tamanho, idAutor, idEditora) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)",
+    [titulo, genero, classificacao, editora, volume, data_publicacao, qtde_paginas, estoque, preco, sinopse, tamanho, idAutor, idEditora]
+  )
+
+  if (r.rowCount == 0){
+    return res.status(404).json({msg: "Não há livro nesta posição!"})
+  }
+
+  res.status(200).json(r.rows)
+});
+
 module.exports = router;
