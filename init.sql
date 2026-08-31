@@ -5,20 +5,10 @@ CREATE TABLE IF NOT EXISTS usuario (
     id SERIAL PRIMARY KEY,
     nome VARCHAR(255) NOT NULL,
     login VARCHAR(255) UNIQUE NOT NULL,
-    senha CHAR(60) NOT NULL,
-    img VARCHAR(255)
-);
-
-CREATE TABLE IF NOT EXISTS editora (
-    id SERIAL PRIMARY KEY,
-    nome VARCHAR(255) NOT NULL
-);
-
-CREATE TABLE IF NOT EXISTS autor (
-    id SERIAL PRIMARY KEY,
-    nome VARCHAR(255) NOT NULL,
-    idade INT NOT NULL,
-    nacionalidade VARCHAR(200) NOT NULL
+    senha varCHAR(60) NOT NULL,
+    img VARCHAR(255),
+    autor BOOLEAN DEFAULT FALSE,
+    nacionalidade VARCHAR(200) NULL
 );
 
 CREATE TABLE IF NOT EXISTS livro (
@@ -34,37 +24,28 @@ CREATE TABLE IF NOT EXISTS livro (
     preco INTEGER NOT NULL,
     sinopse VARCHAR(255),
     tamanho VARCHAR(5),
-    idAutor INT NOT NULL,
-    idEditora INT NOT NULL, 
-    CONSTRAINT idAutor_Fk FOREIGN KEY (idAutor) REFERENCES autor(id),
-    CONSTRAINT idEditora_Fk FOREIGN KEY (idEditora) REFERENCES editora(id)
+    idUsuario INT NOT NULL,
+    ativo BOOLEAN DEFAULT TRUE,
+
+    CONSTRAINT idUsuario_FK FOREIGN KEY (idUsuario) REFERENCES usuario(id)
+);
+
+CREATE TABLE IF NOT EXISTS usuario_livro(
+    idCompra SERIAL PRIMARY KEY,
+    idUsuario INT NOT NULL,
+    idLivro INT NOT NULL,
+
+    CONSTRAINT idUsuario_FK FOREIGN KEY (idUsuario) REFERENCES usuario(id),
+    CONSTRAINT idLivro_FK FOREIGN KEY (idLivro) REFERENCES livro(id)
 );
 
 
-
 -- USUÁRIOS
-INSERT INTO usuario (nome, login, senha, img) VALUES
-('João Silva', 'joao.silva', '123456789012345678901234567890123456789012345678901234567890', 'joao.jpg'),
-('Maria Oliveira', 'maria.oliveira', 'abcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdef', 'maria.jpg'),
-('Carlos Souza', 'carlos.souza', 'qwertyqwertyqwertyqwertyqwertyqwertyqwertyqwertyqwertyqwerty', 'carlos.jpg');
-
-
--- AUTORES
-INSERT INTO autor (nome, idade, nacionalidade) VALUES
-('J. K. Rowling', 60, 'Britânica'),
-('George R. R. Martin', 77, 'Americana'),
-('Machado de Assis', 69, 'Brasileira'),
-('Jorge Amado', 88, 'Brasileira'),
-('Rick Riordan', 61, 'Americana');
-
-
--- EDITORAS
-INSERT INTO editora (nome) VALUES
-('Rocco'),
-('Intrínseca'),
-('Companhia das Letras'),
-('Record'),
-('HarperCollins');
+INSERT INTO usuario (nome, login, senha, img, autor, nacionalidade) VALUES
+('João Silva', 'joao.silva', '123', 'joao.jpg', FALSE, 'Brasileira'),
+('Maria Oliveira', 'maria.oliveira', '123', 'maria.jpg', FALSE, 'Brasileira'),
+('Carlos Souza', 'carlos.souza', '123', 'carlos.jpg', FALSE, 'Brasileira'),
+('Carlos Souza2', 'carlos.souza.AUTOR', '123', 'carlos.jpg', TRUE, 'Brasileira');
 
 
 -- LIVROS
@@ -80,8 +61,8 @@ INSERT INTO livro (
     preco,
     sinopse,
     tamanho,
-    idAutor,
-    idEditora
+    idUsuario,
+    ativo
 ) VALUES
 (
     'Harry Potter e a Pedra Filosofal',
@@ -96,7 +77,7 @@ INSERT INTO livro (
     'Harry descobre que é um bruxo e começa seus estudos em Hogwarts.',
     '20x14',
     1,
-    1
+    TRUE
 ),
 (
     'Harry Potter e a Câmara Secreta',
@@ -111,7 +92,7 @@ INSERT INTO livro (
     'Harry retorna a Hogwarts e enfrenta novos mistérios.',
     '20x14',
     1,
-    1
+    TRUE
 ),
 (
     'A Guerra dos Tronos',
@@ -126,13 +107,13 @@ INSERT INTO livro (
     'Famílias nobres disputam o poder em um reino marcado por conflitos.',
     '23x16',
     2,
-    2
+    TRUE
 ),
 (
     'Dom Casmurro',
     'Romance',
     '14',
-    'Companhia',
+    'Companhia das Letras',
     1,
     1899,
     256,
@@ -141,7 +122,7 @@ INSERT INTO livro (
     'Bentinho relembra sua vida e seu relacionamento com Capitu.',
     '21x14',
     3,
-    3
+    TRUE
 ),
 (
     'Capitães da Areia',
@@ -155,8 +136,8 @@ INSERT INTO livro (
     45,
     'A história de um grupo de meninos que vive nas ruas de Salvador.',
     '21x14',
-    4,
-    4
+    1,
+    TRUE
 ),
 (
     'Percy Jackson e o Ladrão de Raios',
@@ -170,6 +151,16 @@ INSERT INTO livro (
     60,
     'Percy descobre ser filho de um deus grego e parte em uma aventura.',
     '23x16',
-    5,
-    2
+    2,
+    TRUE
 );
+
+
+-- RELAÇÃO USUÁRIO_LIVRO
+INSERT INTO usuario_livro (idUsuario, idLivro) VALUES
+(1, 1),
+(1, 2),
+(2, 3),
+(3, 4),
+(1, 5),
+(2, 6);
