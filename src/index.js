@@ -7,8 +7,6 @@ app.use(express.json());
 app.use(cors());
 
 app.use("/livro", require("./routes/livro"));
-app.use("/editora", require("./routes/editora"));
-app.use("/autor", require("./routes/autor"));
 app.use("/usuario", require("./routes/usuario"));
 
 /*
