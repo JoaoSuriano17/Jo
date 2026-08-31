@@ -8,7 +8,8 @@ CREATE TABLE IF NOT EXISTS usuario (
     senha varCHAR(60) NOT NULL,
     img VARCHAR(255),
     autor BOOLEAN DEFAULT FALSE,
-    nacionalidade VARCHAR(200) NULL
+    nacionalidade VARCHAR(200) NULL,
+    ativo BOOLEAN DEFAULT TRUE
 );
 
 CREATE TABLE IF NOT EXISTS livro (
@@ -41,11 +42,11 @@ CREATE TABLE IF NOT EXISTS usuario_livro(
 
 
 -- USUÁRIOS
-INSERT INTO usuario (nome, login, senha, img, autor, nacionalidade) VALUES
-('João Silva', 'joao.silva', '123', 'joao.jpg', FALSE, 'Brasileira'),
-('Maria Oliveira', 'maria.oliveira', '123', 'maria.jpg', FALSE, 'Brasileira'),
-('Carlos Souza', 'carlos.souza', '123', 'carlos.jpg', FALSE, 'Brasileira'),
-('Carlos Souza2', 'carlos.souza.AUTOR', '123', 'carlos.jpg', TRUE, 'Brasileira');
+INSERT INTO usuario (nome, login, senha, img, autor, nacionalidade, ativo) VALUES
+('João Silva', 'joao.silva', '123', 'joao.jpg', FALSE, 'Brasileira', TRUE),
+('Maria Oliveira', 'maria.oliveira', '123', 'maria.jpg', FALSE, 'Brasileira', TRUE),
+('Carlos Souza', 'carlos.souza', '123', 'carlos.jpg', FALSE, 'Brasileira', TRUE),
+('Carlos Souza2', 'carlos.souza.AUTOR', '123', 'carlos.jpg', TRUE, 'Brasileira', TRUE);
 
 
 -- LIVROS

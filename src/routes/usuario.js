@@ -24,4 +24,22 @@ router.get("/:id", async (req, res) => {
   res.status(200).json(r.rows)
 });
 
+//Post - usuário = cadastro
+router.post("/", async (req, res) => {
+
+  const {
+    nome, login, senha, img, autor, nacionalidade, ativo
+  } = req.body || {};
+  
+  const r = await db.query("INSERT INTO usuario(nome, login, senha, img, autor, nacionalidade, ativo) VALUES ($1, $2, $3, $4, $5, &6, $",
+    [nome, login, senha, img, autor, nacionalidade, ativo]
+  )
+
+  if (r.rowCount == 0){
+    return res.status(404).json({msg: "Não foi possível adicionar este usuário!"})
+  }
+
+  res.status(200).json(r.rows)
+});
+
 module.exports = router;
